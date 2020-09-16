@@ -126,6 +126,20 @@
         </el-row>
       </el-card>
     </div>
+
+    <section class="main-content">
+      <el-row>
+        <el-col :span="6" style="padding-right:10px">
+            <sidebar></sidebar>
+        </el-col>
+        <!-- <el-col :span="18" style="padding-left:10px">
+            <app-main></app-main>
+        </el-col> -->
+      </el-row>
+    </section>
+    <!-- <section class="foot">
+        <foot></foot>
+    </section> -->
   </div>
 </template>
 
@@ -137,7 +151,11 @@ query {
 }
 </static-query>
 <script>
+import Sidebar from './components/Sidebar'
 export default {
+  components: {
+    Sidebar
+  },
   data() {
     return {
       music: {
@@ -150,7 +168,7 @@ export default {
       backgroundColorLeft: "#2690F9",
       fontColor: "#ffffff",
       backgroundColorRight: "#FC2D2D",
-      blogTitle: "Laziji",
+      blogTitle: "大白菜",
       blogDescribe: "欢迎来到杨家馨的个人博客。",
       githubUsername: "yangjiaxin",
       fullButton: {
@@ -169,6 +187,23 @@ export default {
       audioAutoPlay: false,
       audioUrl: "http://sc1.111ttt.cn:8282/2018/1/03m/13/396131232171.m4a?tflag=1519095601&pin=6cd414115fdb9a950d827487b16b5f97#.mp3",
     };
+  },
+  mounted() {
+    this.$nextTick(() => {
+        setInterval(this.listenMusic, 1000)
+    })
+    let width = window.innerWidth
+    for (let i = 0; i < 12; i++) {
+      let temp = {}
+      let left = this.randomInt(10, width - 310)
+      if(left>width/2-150){
+          left+=300
+      }
+      temp["left"] = left
+      temp["top"] = this.randomInt(20, 300)
+      temp["size"] = this.randomInt(20, 40)
+      this.randomIcon.push(temp)
+    }
   },
   methods: {
     selectTopbar(index) {
@@ -198,6 +233,15 @@ export default {
           }
           break;
       }
+    },
+    randomInt(s, e) {
+      let d = e - s
+      if (d < 0) {
+          return s
+      }
+      let r = Math.random() * d + s
+      r = parseInt(r, 10)
+      return r
     },
     full() {
       if (!this.fullButton.full) {
