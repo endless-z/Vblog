@@ -3,13 +3,10 @@
 //   Vue.use(router)
 //   Vue.use(ElementUI)
 // }
-import Layout from '../Layout'
 
 export const constantRouterMap = [
   {
-    path: '/user/new',
-    redirect: '/user/new/main',
-    component: Layout,
+    path: '/new/main',
     meta: {
       type: "user",
       icon: 'el-icon-star-off',
@@ -17,9 +14,7 @@ export const constantRouterMap = [
     }
   },
   {
-    path: '/user/social',
-    redirect: '/user/social/main',
-    component: Layout,
+    path: '/social/main',
     meta: {
       type: "user",
       icon: 'el-icon-mobile-phone',
@@ -27,9 +22,7 @@ export const constantRouterMap = [
     }
   },
   {
-    path: '/user/blog',
-    redirect: '/user/blog/main',
-    component: Layout,
+    path: '/blog/main',
     meta: {
       type: "user",
       icon: 'el-icon-edit-outline',
@@ -37,9 +30,7 @@ export const constantRouterMap = [
     }
   },
   {
-    path: '/user/project',
-    redirect: '/user/project/main',
-    component: Layout,
+    path: '/project/main',
     meta: {
       type: "user",
       icon: 'el-icon-service',
@@ -47,9 +38,7 @@ export const constantRouterMap = [
     }
   },
   {
-    path: '/user/helper',
-    redirect: '/user/helper/main',
-    component: Layout,
+    path: '/helper/main',
     meta: {
       type: "user",
       icon: 'el-icon-printer',
@@ -58,19 +47,7 @@ export const constantRouterMap = [
     }
   },
   {
-    path: '/user/readme',
-    redirect: '/user/readme/main',
-    component: Layout,
-    meta: {
-      type: "user",
-      icon: 'el-icon-document',
-      title: 'README.md'
-    }
-  },
-  {
-    path: '/user/configure',
-    redirect: '/user/configure/main',
-    component: Layout,
+    path: '/configure/main',
     meta: {
       type: "user",
       icon: 'el-icon-setting',

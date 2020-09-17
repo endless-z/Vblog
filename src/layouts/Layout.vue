@@ -132,14 +132,16 @@
         <el-col :span="6" style="padding-right:10px">
             <sidebar></sidebar>
         </el-col>
-        <!-- <el-col :span="18" style="padding-left:10px">
-            <app-main></app-main>
-        </el-col> -->
+        <el-col :span="18" style="padding-left:10px">
+            <section>
+              <slot />
+          </section>
+        </el-col>
       </el-row>
     </section>
-    <!-- <section class="foot">
+    <section class="foot">
         <foot></foot>
-    </section> -->
+    </section>
   </div>
 </template>
 
@@ -152,9 +154,13 @@ query {
 </static-query>
 <script>
 import Sidebar from './components/Sidebar'
+import AppMain from './components/AppMain'
+import Foot from './components/Foot'
 export default {
   components: {
-    Sidebar
+    Sidebar,
+    AppMain,
+    Foot
   },
   data() {
     return {
