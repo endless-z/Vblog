@@ -6,7 +6,7 @@
 
 export const constantRouterMap = [
   {
-    path: '/new/main',
+    path: '/',
     meta: {
       type: "user",
       icon: 'el-icon-star-off',

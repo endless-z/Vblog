@@ -6,6 +6,7 @@
           v-for="item in constantRouterMap"
           :key="item.path"
           :to="item.path"
+          class="active-style"
         >
         <el-menu-item :class="{ 'is-active': path === item.path }">
           <i :class="item.meta.icon"></i>
@@ -28,7 +29,7 @@ export default {
       menuList: [],
     };
   },
-computed: {
+  computed: {
     path() {
       return this.$route.path;
     },
@@ -40,3 +41,8 @@ computed: {
   },
 };
 </script>
+<style scoped>
+.active-style:hover{
+  text-decoration: none;
+}
+</style>
