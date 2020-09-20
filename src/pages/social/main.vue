@@ -17,7 +17,7 @@
                     <a
                       @click="$router.push(`/user/social/details/${item.name}`)"
                       style=" text-decoration:none;cursor:pointer"
-                    >{{item.name}}</a>
+                    >{{item.login}}</a>
                     <br />
                     <i class="el-icon-message"></i>&emsp;
                     <a
@@ -27,7 +27,7 @@
                     >TA的主页</a>
                     <br />
                     <img
-                      :src="item.avatarUrl"
+                      :src="item.avatar_url"
                       style="width: 100%;border-radius:5px;margin-top: 5px"
                     />
                   </el-card>
@@ -79,7 +79,7 @@
                     >TA的主页</a>
                     <br />
                     <img
-                      :src="item.avatarUrl"
+                      :src="item.avatar_url"
                       style="width: 100%;border-radius:5px;margin-top: 5px"
                     />
                   </el-card>
@@ -111,12 +111,13 @@
   </Layout>
 </template>
 <script>
-// import { mapGetters } from "vuex";
-// import UserApi from "@/api/user";
+import axios from 'axios'
 export default {
   data() {
     return {
       activeTab: "followers",
+      followersTotal: 27,
+      followingTotal: 16,
       followers: {
         query: {
           page: 1,
@@ -136,6 +137,47 @@ export default {
         list: [],
       },
     };
+  },
+  created () {
+    this.getFollowers()
+  },
+  methods: {
+    onSelect() {
+      switch (this.activeTab) {
+        case "followers":
+          this.getFollowers()
+          break
+        case "following":
+          this.getFollowing()
+          break
+        default:
+          break
+      }
+    },
+    async getFollowers () {
+      this.followers.loading = true
+      try {
+        const res = await axios({
+          method: 'GET',
+          url: 'https://api.github.com/users/endless-z/followers'
+        })
+        this.followers.list = res.data
+        this.followersTotal = res.data.length
+        this.followers.loading = false
+      } catch (err) {
+        
+      }
+    },
+    async getFollowing () {
+      this.following.loading = true
+      const res = await axios({
+        method: 'GET',
+        url: 'https://api.github.com/users/endless-z/following'
+      })
+      this.following.list = res.data
+      this.followingTotal = res.data.length
+      this.following.loading = false
+    }
   }
 };
 </script>

@@ -3,9 +3,8 @@
   <div style="min-height: 600px" v-loading="loading">
     <el-card shadow="never" style="margin-bottom: 20px">
       <el-input placeholder="请输入关键字" v-model="searchKey" clearable style="width: 300px"></el-input>
-      <el-button @click="search" icon="el-icon-search" style="margin-left: 10px" circle plain></el-button>
+      <el-button icon="el-icon-search" style="margin-left: 10px" circle plain></el-button>
       <el-button
-        @click="$share()"
         icon="el-icon-share"
         type="warning"
         style="margin-left: 10px"
@@ -20,7 +19,6 @@
         v-for="(item,index) in projects"
         :key="'pro'+index"
         style="margin-bottom: 20px"
-        v-if="!item.hide"
       >
         <div slot="header">
           <el-row>
@@ -79,7 +77,7 @@
       </el-card>
       <div style="text-align: center">
         <el-pagination
-          @current-change="list"
+          @current-change="getList"
           background
           layout="prev, pager, next"
           :current-page.sync="query.page"
@@ -102,4 +100,82 @@
   </Layout>
 </template>
 <script>
+import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      query: {
+        page: 1,
+        pageSize: 5,
+        pageNumber: 1
+      },
+      loading: false,
+      searchKey: "",
+      projects: []
+    }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    getList () {
+      this.loading = true
+     axios({
+        method: 'GET',
+        url: `https://api.github.com/users/endless-z/repos?page=${this.query.page}&per_page=${this.query.pageSize}`
+      }).then((response) => {
+        let result = response.data
+        this.projects =  []
+        let pageNumber = this.parseHeaders(response.headers)
+        if (pageNumber) {
+          this.query.pageNumber = pageNumber
+        }
+        for (let i = 0; i < result.length; i++) {
+          let item = result[i]
+          let data = {}
+          data.id = item['id']
+          data.name = item['name']
+          data.url = item['html_url']
+          data.description = item['description']
+          data.stargazersCount = item['stargazers_count']
+          data.watchersCount = item['watchers_count']
+          data.forksCount = item['forks_count']
+          data.language = item['language']
+          data.license = item['license'] ? item['license']['spdx_id'] : null
+          data.createTime = item['created_at']
+          data.updateTime = item['created_at']
+          data.hide = false
+          this.projects.push(data)
+        }
+      }).then(() => this.loading = false)
+    },
+    goGithub(url) {
+      window.open(url)
+    },
+    parseHeaders(headers) {
+      try {
+        let linkArr = headers['link'].split(",")
+        for (let i = 0; i < linkArr.length; i++) {
+          let temp = linkArr[i]
+          if (temp.indexOf("rel=\"last\"") < 0) {
+              continue
+          }
+          let paramArr = temp.split(/[\?&]/)
+          for (let j = 0; j < paramArr.length; j++) {
+            let stemp = paramArr[j]
+            let kv = stemp.split("=")
+            if (kv[0] != "page") {
+                continue
+            }
+            return parseInt(kv[1])
+          }
+        }
+      } catch (e) {
+
+      }
+      return 0
+    }
+  }
+}
 </script>

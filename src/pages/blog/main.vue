@@ -3,9 +3,8 @@
     <div style="min-height: 600px" v-loading="loading">
       <el-card shadow="never" style="margin-bottom: 20px">
         <el-input placeholder="请输入关键字" v-model="searchKey" clearable style="width: 300px"></el-input>
-        <el-button @click="search" icon="el-icon-search" style="margin-left: 10px" circle plain></el-button>
+        <el-button icon="el-icon-search" style="margin-left: 10px" circle plain></el-button>
         <el-button
-          @click="$share()"
           style="margin-left: 10px"
           icon="el-icon-share"
           type="warning"
@@ -18,17 +17,15 @@
           round
           plain
           style="float: right;"
-          @click="goAdd"
         >写博文</el-button>
       </el-card>
 
-      <div v-if="blogs&&blogs.length>0">
+      <div v-if="blogs && blogs.length>0">
         <el-card
           shadow="hover"
           v-for="(item,index) in blogs"
           :key="'p'+index"
           style="margin-bottom: 20px"
-          v-if="!item.hide"
         >
           <div slot="header">
             <el-row>
@@ -36,13 +33,13 @@
                 <span>
                   <a style="text-decoration:none;cursor:pointer" @click="goDetails(item.id)">
                     <i class="el-icon-edit-outline"></i>
-                    &nbsp;&nbsp; {{item.title}}
+                    &nbsp;&nbsp; {{item.node.createdTime}} 更新
                   </a>
                 </span>
               </el-col>
               <el-col :span="8">
                 <div style="text-align: right;">
-                  <el-button
+                  <!-- <el-button
                     @click="$share('/user/blog/details/'+item.id)"
                     style="padding: 3px 0"
                     type="text"
@@ -61,25 +58,25 @@
                     type="text"
                     icon="el-icon-delete"
                     v-if="token"
-                  ></el-button>
+                  ></el-button> -->
                 </div>
               </el-col>
             </el-row>
           </div>
-          <div style="font-size: 0.9rem;line-height: 1.5;color: #606c71;">最近更新 {{item.updateTime}}</div>
+          <div style="font-size: 0.9rem;line-height: 1.5;color: #606c71;">最近更新 {{item.node.updateTime}}</div>
           <div
             style="font-size: 1.1rem;line-height: 1.5;color: #303133;padding: 10px 0px 0px 0px"
-          >{{item.description}}</div>
+          >{{item.node.description}}</div>
         </el-card>
         <div style="text-align: center">
-          <el-pagination
+          <!-- <el-pagination
             @current-change="list"
             background
             layout="prev, pager, next"
             :current-page.sync="query.page"
             :page-size="query.pageSize"
             :total="query.pageNumber*query.pageSize"
-          ></el-pagination>
+          ></el-pagination> -->
         </div>
       </div>
 
@@ -95,7 +92,23 @@
     </div>
   </Layout>
 </template>
+<page-query>
+query {
+  blog: allStrapiBlog {
+    edges {
+      node {
+        id
+        title
+      	description
+        updatedTime
+        createdTime
+      }
+    }
+  }
+}
+</page-query>
 <script>
+
 export default {
   data() {
     return {
@@ -105,9 +118,14 @@ export default {
         pageNumber: 1,
       },
       loading: false,
-      searchKey: "",
-      blogs: [],
+      searchKey: ""
     };
+  },
+  computed: {
+    blogs () {
+      console.log(this.$page.blog.edges)
+      return this.$page.blog.edges
+    }
   }
 };
 </script>
