@@ -1,6 +1,6 @@
 <template>
   <Layout>
-    使用帮助
+    如何部署
   </Layout>
 </template>
 
