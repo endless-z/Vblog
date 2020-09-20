@@ -133,14 +133,14 @@
             <sidebar></sidebar>
         </el-col>
         <el-col :span="18" style="padding-left:10px">
-            <section>
-              <slot />
+          <section>
+            <slot />
           </section>
         </el-col>
       </el-row>
     </section>
     <section class="foot">
-        <foot></foot>
+      <foot></foot>
     </section>
   </div>
 </template>
